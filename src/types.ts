@@ -23,11 +23,10 @@ export interface Member {
   relationship: string; // Quan hệ với chủ hộ (Chủ hộ, Vợ, Con trai, v.v.)
   birthDate: string; // Ngày sinh
   gender: 'Nam' | 'Nữ' | 'Khác'; // Giới tính
-  idCard: string; // Số CCCD / CMND
-  occupation: string; // Nghề nghiệp
+  residenceStatus: 'Có mặt tại địa phương' | 'Đi làm ăn xa' | 'Đã mất'; // Tình trạng cư trú
+  notes: string; // Ghi chú (thương binh, bệnh binh, bộ đội tại ngũ, hộ nghèo, gia đình chính sách, v.v.)
   phone?: string; // Số điện thoại riêng (nếu có)
   address?: string; // Địa chỉ riêng (nếu khác địa chỉ hộ)
-  notes?: string; // Ghi chú riêng (ví dụ: tiền sử bệnh, học tập, ghi chú đặc biệt)
   createdAt?: any;
   updatedAt?: any;
 }
@@ -49,6 +48,12 @@ export const RELATIONSHIPS = [
 ];
 
 export const GENDERS = ['Nam', 'Nữ', 'Khác'] as const;
+
+export const RESIDENCE_STATUSES = [
+  'Có mặt tại địa phương',
+  'Đi làm ăn xa',
+  'Đã mất'
+] as const;
 
 // Mock/Seed Data
 export const BASIC_HOUSEHOLDS: Household[] = [
@@ -87,10 +92,9 @@ export const BASIC_MEMBERS: Member[] = [
     relationship: 'Chủ hộ',
     birthDate: '1978-05-12',
     gender: 'Nam',
-    idCard: '001078001234',
-    occupation: 'Kỹ sư CNTT',
+    residenceStatus: 'Có mặt tại địa phương',
     address: 'Căn hộ 1205, Tòa A1, Khu đô thị An Bình',
-    notes: 'Tổ trưởng tổ dân phố nhiệt tình, có trách nhiệm cao với các công việc chung.'
+    notes: 'Gia đình chính sách, tổ trưởng tổ dân phố'
   },
   {
     id: 'm2',
@@ -99,10 +103,9 @@ export const BASIC_MEMBERS: Member[] = [
     relationship: 'Vợ',
     birthDate: '1982-08-20',
     gender: 'Nữ',
-    idCard: '001082005678',
-    occupation: 'Giáo viên trường THCS',
+    residenceStatus: 'Có mặt tại địa phương',
     address: 'Căn hộ 1205, Tòa A1, Khu đô thị An Bình',
-    notes: 'Giảng dạy bộ môn Toán, thường xuyên hỗ trợ các lớp học tình thương tại địa bàn.'
+    notes: 'Thương binh hạng 3/4, giáo viên'
   },
   {
     id: 'm3',
@@ -111,10 +114,9 @@ export const BASIC_MEMBERS: Member[] = [
     relationship: 'Con trai',
     birthDate: '2008-03-15',
     gender: 'Nam',
-    idCard: '001208009999',
-    occupation: 'Học sinh cấp 3',
+    residenceStatus: 'Có mặt tại địa phương',
     address: 'Căn hộ 1205, Tòa A1, Khu đô thị An Bình',
-    notes: 'Đoàn viên năng nổ, tích cực tham gia các phong trào thanh thiếu niên hè.'
+    notes: 'Đoàn viên thanh niên'
   },
   // Hộ 2
   {
@@ -124,10 +126,9 @@ export const BASIC_MEMBERS: Member[] = [
     relationship: 'Chủ hộ',
     birthDate: '1990-11-02',
     gender: 'Nữ',
-    idCard: '038090001111',
-    occupation: 'Nhân viên kế toán',
+    residenceStatus: 'Có mặt tại địa phương',
     address: 'Căn hộ 1502, Tòa A1, Khu đô thị An Bình',
-    notes: 'Phụ trách thủ quỹ chi hội phụ nữ, cần lưu ý cập nhật liên lạc khi họp dân phố.'
+    notes: 'Hộ nghèo'
   },
   {
     id: 'm5',
@@ -136,10 +137,9 @@ export const BASIC_MEMBERS: Member[] = [
     relationship: 'Chồng',
     birthDate: '1988-04-25',
     gender: 'Nam',
-    idCard: '038088002222',
-    occupation: 'Kỹ sư công trình xây dựng',
+    residenceStatus: 'Đi làm ăn xa',
     address: 'Căn hộ 1502, Tòa A1, Khu đô thị An Bình',
-    notes: 'Thường xuyên đi công tác xa nhà, ít khi có mặt trong tuần.'
+    notes: 'Bộ đội tại ngũ'
   },
   {
     id: 'm6',
@@ -148,10 +148,9 @@ export const BASIC_MEMBERS: Member[] = [
     relationship: 'Con gái',
     birthDate: '2024-01-10',
     gender: 'Nữ',
-    idCard: 'Chưa có',
-    occupation: 'Nhỏ tuổi',
+    residenceStatus: 'Có mặt tại địa phương',
     address: 'Căn hộ 1502, Tòa A1, Khu đô thị An Bình',
-    notes: 'Đang trong độ tuổi tiêm chủng mở rộng. Cần ưu tiên thông báo y tế.'
+    notes: 'Trẻ em dưới 6 tuổi'
   },
   // Hộ 3
   {
@@ -161,9 +160,60 @@ export const BASIC_MEMBERS: Member[] = [
     relationship: 'Chủ hộ',
     birthDate: '1985-09-30',
     gender: 'Nam',
-    idCard: '012085004444',
-    occupation: 'Chủ cửa hàng máy tính',
+    residenceStatus: 'Có mặt tại địa phương',
     address: 'Căn hộ 0804, Tòa A2, Khu đô thị An Bình',
-    notes: 'Kinh doanh tự do, hỗ trợ kỹ thuật cài đặt hệ thống camera giám sát của tổ dân phố.'
+    notes: 'Bệnh binh'
   }
 ];
+
+export interface FeeCampaign {
+  id: string;
+  title: string;
+  description: string;
+  type: 'mandatory' | 'voluntary'; // bắt buộc hoặc tự nguyện đóng góp
+  amount: number; // số tiền (0 nếu là tự nguyện đóng góp tùy tâm)
+  createdAt?: any;
+}
+
+export interface FeePayment {
+  id: string;
+  householdId: string;
+  memberId?: string; // ID của nhân khẩu nếu thu theo nhân khẩu
+  campaignId: string;
+  status: 'paid' | 'unpaid';
+  paidAmount: number;
+  paidAt?: any;
+  notes?: string;
+}
+
+export const BASIC_CAMPAIGNS: FeeCampaign[] = [
+  {
+    id: 'c1',
+    title: 'Phí dịch vụ chung cư hằng tháng',
+    description: 'Bao gồm phí thang máy, an ninh, thu gom rác thải sinh hoạt và thắp sáng công cộng.',
+    type: 'mandatory',
+    amount: 150000
+  },
+  {
+    id: 'c2',
+    title: 'Ủng hộ Quỹ Khuyến Học dân phố',
+    description: 'Quỹ khen thưởng cho các cháu học sinh đạt thành tích xuất sắc và hỗ trợ trẻ em nghèo hiếu học.',
+    type: 'voluntary',
+    amount: 0 // Tùy tâm đóng góp
+  },
+  {
+    id: 'c3',
+    title: 'Phí bảo trì tòa nhà hằng năm',
+    description: 'Kinh phí dự phòng cho việc sửa chữa và cải tạo các hạng mục cơ sở hạ tầng dùng chung.',
+    type: 'mandatory',
+    amount: 500000
+  },
+  {
+    id: 'c4',
+    title: 'Ủng hộ đồng bào bị ảnh hưởng bởi thiên tai',
+    description: 'Quyên góp khẩn cấp hỗ trợ đồng bào vùng lũ lụt vượt qua khó khăn, ổn định cuộc sống.',
+    type: 'voluntary',
+    amount: 0
+  }
+];
+

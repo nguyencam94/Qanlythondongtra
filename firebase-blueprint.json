@@ -25,13 +25,40 @@
         "relationship": { "type": "string", "description": "Relationship with the head of household." },
         "birthDate": { "type": "string", "description": "Birth date of the resident." },
         "gender": { "type": "string", "enum": ["Nam", "Nữ", "Khác"] },
-        "idCard": { "type": "string", "description": "CCCD / CMND number if available." },
-        "occupation": { "type": "string", "description": "Occupation or current status." },
+        "residenceStatus": { "type": "string", "enum": ["Có mặt tại địa phương", "Đi làm ăn xa", "Đã mất"] },
+        "notes": { "type": "string", "description": "Special notes like thương binh, bệnh binh, hộ nghèo, etc." },
         "phone": { "type": "string", "description": "Personal phone number." },
         "createdAt": { "type": "string", "format": "date-time" },
         "updatedAt": { "type": "string", "format": "date-time" }
       },
-      "required": ["householdId", "fullName", "relationship", "birthDate", "gender", "idCard", "occupation"]
+      "required": ["householdId", "fullName", "relationship", "birthDate", "gender", "residenceStatus", "notes"]
+    },
+    "FeeCampaign": {
+      "title": "FeeCampaign",
+      "description": "Campaign for fee contribution, can be mandatory or voluntary.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Title of the fee campaign." },
+        "description": { "type": "string", "description": "Details of the fee campaign." },
+        "type": { "type": "string", "enum": ["mandatory", "voluntary"] },
+        "amount": { "type": "number", "description": "Required amount for mandatory, or 0/custom for voluntary." },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "description", "type", "amount"]
+    },
+    "FeePayment": {
+      "title": "FeePayment",
+      "description": "Tracking payment of fee campaigns per household.",
+      "type": "object",
+      "properties": {
+        "householdId": { "type": "string", "description": "Reference ID of the household." },
+        "campaignId": { "type": "string", "description": "Reference ID of the fee campaign." },
+        "status": { "type": "string", "enum": ["paid", "unpaid"] },
+        "paidAmount": { "type": "number", "description": "Amount actually paid." },
+        "notes": { "type": "string", "description": "Optional notes or transaction comments." },
+        "paidAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["householdId", "campaignId", "status", "paidAmount"]
     }
   },
   "firestore": {
@@ -42,6 +69,14 @@
     "households/{householdId}/members/{memberId}": {
       "schema": "Member",
       "description": "Subcollection of members within each household."
+    },
+    "fee_campaigns/{campaignId}": {
+      "schema": "FeeCampaign",
+      "description": "Collection of fee campaigns."
+    },
+    "fee_payments/{paymentId}": {
+      "schema": "FeePayment",
+      "description": "Collection of fee payments."
     }
   }
 }

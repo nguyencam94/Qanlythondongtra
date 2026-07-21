@@ -42,14 +42,14 @@ service cloud.firestore {
     // Members inside Household (Subcollection)
     match /households/{householdId}/members/{memberId} {
       function isValidMember(data) {
-        return data.keys().hasAll(['householdId', 'fullName', 'relationship', 'birthDate', 'gender', 'idCard', 'occupation'])
+        return data.keys().hasAll(['householdId', 'fullName', 'relationship', 'birthDate', 'gender', 'residenceStatus', 'notes'])
           && data.householdId == householdId
           && data.fullName is string && data.fullName.size() <= 200
           && data.relationship is string && data.relationship.size() <= 100
           && data.birthDate is string && data.birthDate.size() <= 50
           && (data.gender == 'Nam' || data.gender == 'Nữ' || data.gender == 'Khác')
-          && data.idCard is string && data.idCard.size() <= 100
-          && data.occupation is string && data.occupation.size() <= 200;
+          && (data.residenceStatus == 'Có mặt tại địa phương' || data.residenceStatus == 'Đi làm ăn xa' || data.residenceStatus == 'Đã mất')
+          && data.notes is string && data.notes.size() <= 1000;
       }
 
       allow read: if isSignedIn();
@@ -61,6 +61,40 @@ service cloud.firestore {
     // Support Collection Group queries for members
     match /{path=**}/members/{memberId} {
       allow read: if isSignedIn();
+    }
+
+    // Fee Campaigns
+    match /fee_campaigns/{campaignId} {
+      function isValidCampaign(data) {
+        return data.keys().hasAll(['title', 'description', 'type', 'amount'])
+          && data.title is string && data.title.size() <= 200
+          && data.description is string && data.description.size() <= 2000
+          && (data.type == 'mandatory' || data.type == 'voluntary')
+          && data.amount is number;
+      }
+
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidCampaign(request.resource.data);
+      allow update: if isSignedIn() && isValidCampaign(request.resource.data);
+      allow delete: if isSignedIn();
+    }
+
+    // Fee Payments
+    match /fee_payments/{paymentId} {
+      function isValidPayment(data) {
+        return data.keys().hasAll(['householdId', 'campaignId', 'status', 'paidAmount'])
+          && data.householdId is string && data.householdId.size() <= 128
+          && data.campaignId is string && data.campaignId.size() <= 128
+          && (data.status == 'paid' || data.status == 'unpaid')
+          && data.paidAmount is number
+          && (!('notes' in data) || (data.notes is string && data.notes.size() <= 2000))
+          && (!('paidAt' in data) || data.paidAt == null || data.paidAt is string || data.paidAt is timestamp);
+      }
+
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidPayment(request.resource.data);
+      allow update: if isSignedIn() && isValidPayment(request.resource.data);
+      allow delete: if isSignedIn();
     }
 
     // Admins collection
