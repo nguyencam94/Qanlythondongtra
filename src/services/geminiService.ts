@@ -1,7 +1,14 @@
 import { GoogleGenAI, Type } from "@google/genai";
 
-// Initialize Gemini with the API key from environment
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+let aiInstance: GoogleGenAI | null = null;
+
+function getAi() {
+  if (!aiInstance) {
+    const key = process.env.GEMINI_API_KEY || '';
+    aiInstance = new GoogleGenAI({ apiKey: key });
+  }
+  return aiInstance;
+}
 
 export interface HouseholdAnalysis {
   suggestedNotes: string;
@@ -40,6 +47,7 @@ Yêu cầu đầu ra:
 
 Hãy trả về kết quả dưới dạng JSON hoàn toàn hợp lệ.`;
 
+  const ai = getAi();
   const response = await ai.models.generateContent({
     model: "gemini-2.5-flash",
     contents: prompt,

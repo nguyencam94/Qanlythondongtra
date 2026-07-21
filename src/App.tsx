@@ -762,8 +762,8 @@ export default function App() {
                             )}
                           >
                             <div className="flex justify-between items-start gap-2">
-                              <div className="flex items-center gap-2.5">
-                                <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-black text-sm">
+                              <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                                <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-black text-sm shrink-0">
                                   {h.ownerName.charAt(0)}
                                 </div>
                                 <div className="min-w-0">
@@ -772,10 +772,36 @@ export default function App() {
                                 </div>
                               </div>
 
-                              {/* Members Count Badge */}
-                              <span className="bg-slate-100 text-slate-600 text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-lg flex items-center gap-1 shrink-0">
-                                <Users className="w-3 h-3" /> {hMembers.length} Nhân khẩu
-                              </span>
+                              <div className="flex items-center gap-1.5 shrink-0">
+                                {/* Members Count Badge */}
+                                <span className="bg-slate-100 text-slate-600 text-[10px] font-extrabold uppercase tracking-wider px-2 py-1 rounded-lg flex items-center gap-1 shrink-0 whitespace-nowrap">
+                                  <Users className="w-3 h-3" /> {hMembers.length} Nhân khẩu
+                                </span>
+
+                                {/* Quick Delete & Edit Action Indicators */}
+                                <div className="flex gap-0.5 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-150 shrink-0">
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleEditHouseholdClick(h);
+                                    }}
+                                    className="p-1 hover:bg-slate-100 text-slate-500 hover:text-blue-600 rounded-lg transition-all cursor-pointer"
+                                    title="Sửa hộ khẩu"
+                                  >
+                                    <Settings className="w-4 h-4" />
+                                  </button>
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleDeleteHousehold(h.id, h.ownerName);
+                                    }}
+                                    className="p-1 hover:bg-slate-100 text-slate-500 hover:text-red-500 rounded-lg transition-all cursor-pointer"
+                                    title="Xóa hộ khẩu"
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                  </button>
+                                </div>
+                              </div>
                             </div>
 
                             <div className="space-y-1.5 text-xs text-slate-500">
@@ -787,30 +813,6 @@ export default function App() {
                                 <Phone className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                                 <span>{h.phone}</span>
                               </div>
-                            </div>
-
-                            {/* Quick Delete & Edit Action Indicators */}
-                            <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity absolute top-4 right-4">
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleEditHouseholdClick(h);
-                                }}
-                                className="p-1.5 hover:bg-slate-100 text-slate-500 hover:text-blue-600 rounded-lg transition-all cursor-pointer"
-                                title="Sửa hộ khẩu"
-                              >
-                                <Settings className="w-4 h-4" />
-                              </button>
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleDeleteHousehold(h.id, h.ownerName);
-                                }}
-                                className="p-1.5 hover:bg-slate-100 text-slate-500 hover:text-red-500 rounded-lg transition-all cursor-pointer"
-                                title="Xóa hộ khẩu"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </button>
                             </div>
                           </motion.div>
                         );
