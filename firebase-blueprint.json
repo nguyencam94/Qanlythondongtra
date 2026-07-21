@@ -1,0 +1,47 @@
+{
+  "entities": {
+    "Household": {
+      "title": "Household",
+      "description": "Information about a household registration in the community.",
+      "type": "object",
+      "properties": {
+        "householdCode": { "type": "string", "description": "Unique code for the household, e.g., HK-2041." },
+        "ownerName": { "type": "string", "description": "Full name of the head of household." },
+        "address": { "type": "string", "description": "Physical address in the residential area." },
+        "phone": { "type": "string", "description": "Primary contact phone number." },
+        "notes": { "type": "string", "description": "Detailed notes, warnings, or records." },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["householdCode", "ownerName", "address", "phone", "notes"]
+    },
+    "Member": {
+      "title": "Member",
+      "description": "Information about a resident belonging to a household.",
+      "type": "object",
+      "properties": {
+        "householdId": { "type": "string", "description": "Reference ID of the household." },
+        "fullName": { "type": "string", "description": "Full name of the resident." },
+        "relationship": { "type": "string", "description": "Relationship with the head of household." },
+        "birthDate": { "type": "string", "description": "Birth date of the resident." },
+        "gender": { "type": "string", "enum": ["Nam", "Nữ", "Khác"] },
+        "idCard": { "type": "string", "description": "CCCD / CMND number if available." },
+        "occupation": { "type": "string", "description": "Occupation or current status." },
+        "phone": { "type": "string", "description": "Personal phone number." },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["householdId", "fullName", "relationship", "birthDate", "gender", "idCard", "occupation"]
+    }
+  },
+  "firestore": {
+    "households/{householdId}": {
+      "schema": "Household",
+      "description": "Collection of households."
+    },
+    "households/{householdId}/members/{memberId}": {
+      "schema": "Member",
+      "description": "Subcollection of members within each household."
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "Quản lý Cư dân",
+  "description": "Hệ thống quản lý cư dân và hộ khẩu khu dân cư, thống kê số hộ khẩu, nhân khẩu, địa chỉ, số điện thoại, ghi chú chi tiết và thành viên từng hộ gia đình.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
