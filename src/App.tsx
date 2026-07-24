@@ -829,92 +829,111 @@ export default function App() {
       {appState === AppState.DASHBOARD && user && (
         <div className="min-h-screen flex flex-col">
           {/* HEADER BAR */}
-          <header className="bg-white border-b border-slate-100 px-6 py-4 sticky top-0 z-40 shadow-sm">
-            <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 bg-blue-600 rounded-2xl text-white shadow-md shadow-blue-100">
-                  <Home className="w-6 h-6" />
+          <header className="bg-white border-b border-slate-100 px-3 py-2.5 md:px-6 md:py-4 sticky top-0 z-40 shadow-sm">
+            <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 md:gap-4">
+              <div className="flex items-center gap-2 md:gap-3 min-w-0">
+                <div className="p-1.5 md:p-2 bg-blue-600 rounded-xl md:rounded-2xl text-white shadow-sm md:shadow-md shadow-blue-100 shrink-0">
+                  <Home className="w-4 h-4 md:w-5 md:h-5" />
                 </div>
-                <div>
-                  <h1 className="text-xl font-black tracking-tight text-slate-900">Ban CTMT Thôn Đông Trà</h1>
-                  <p className="text-xs text-slate-400 uppercase font-bold tracking-widest">Nền Tảng Quản Lý Dân Cư</p>
+                <div className="min-w-0">
+                  <h1 className="text-xs sm:text-sm md:text-base font-black tracking-tight text-slate-900 truncate">
+                    Ban CTMT Thôn Đông Trà
+                  </h1>
+                  <p className="text-[9px] md:text-[11px] text-slate-400 uppercase font-bold tracking-wider truncate">
+                    Nền Tảng Quản Lý Dân Cư
+                  </p>
                 </div>
               </div>
 
               {/* User Actions */}
-              <div className="flex items-center gap-4 w-full md:w-auto justify-end">
-                {isAdminUser && (
-                  <span className="bg-amber-50 text-amber-600 p-2 rounded-xl text-xs font-bold flex items-center justify-center border border-amber-100" title="Quản trị viên">
-                    <Shield className="w-4 h-4" />
+              <div className="flex items-center gap-1.5 md:gap-2.5 shrink-0">
+                <div className="flex items-center gap-1.5 md:gap-2 bg-slate-50 px-2 py-1 md:px-2.5 md:py-1.5 rounded-xl md:rounded-2xl border border-slate-100">
+                  <span className="text-[11px] md:text-xs font-black text-slate-700 uppercase">
+                    {(user.email || 'c').charAt(0).toLowerCase()}
                   </span>
-                )}
-                <div className="flex items-center gap-2 bg-slate-50 pl-3 pr-1.5 py-1.5 rounded-2xl border border-slate-100">
-                  <span className="text-xs font-bold text-slate-700">{user.displayName || user.email}</span>
                   {user.photoURL ? (
-                    <img src={user.photoURL} alt="avatar" className="w-7 h-7 rounded-full object-cover border border-slate-200" referrerPolicy="no-referrer" />
+                    <img src={user.photoURL} alt="avatar" className="w-5 h-5 md:w-6 md:h-6 rounded-full object-cover border border-slate-200 shrink-0" referrerPolicy="no-referrer" />
                   ) : (
-                    <div className="w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-black">
-                      {user.displayName?.charAt(0) || 'U'}
+                    <div className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] md:text-xs font-black shrink-0">
+                      {(user.email || 'c').charAt(0).toLowerCase()}
                     </div>
                   )}
                 </div>
+
+                {isAdminUser && (
+                  <span className="bg-amber-50 text-amber-600 p-1.5 md:p-2 rounded-lg md:rounded-xl text-xs font-bold flex items-center justify-center border border-amber-100 shrink-0" title="Quản trị viên">
+                    <Shield className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                  </span>
+                )}
+
                 <button
                   onClick={logOut}
                   title="Đăng xuất"
-                  className="p-3 bg-red-50 hover:bg-red-100 text-red-500 rounded-2xl transition-all cursor-pointer"
+                  className="p-1.5 md:p-2 bg-red-50 hover:bg-red-100 text-red-500 rounded-xl md:rounded-2xl transition-all cursor-pointer shrink-0"
                 >
-                  <LogOut className="w-5 h-5" />
+                  <LogOut className="w-4 h-4 md:w-4 md:h-4" />
                 </button>
               </div>
             </div>
           </header>
 
           {/* PAGE NAVIGATION TABS */}
-          <nav className="bg-white border-b border-slate-100 px-6 py-2 sticky top-[73px] z-30 shadow-sm">
-            <div className="max-w-7xl mx-auto flex flex-wrap gap-1 md:gap-2">
+          <nav className="bg-white border-b border-slate-100 px-2 md:px-6 py-1 md:py-2 sticky top-[49px] md:top-[73px] z-30 shadow-sm">
+            <div className="max-w-7xl mx-auto grid grid-cols-4 md:flex md:flex-wrap gap-1 md:gap-2">
               <button
                 onClick={() => setActiveTab('overview')}
                 className={cn(
-                  "py-3 px-4 md:px-5 text-xs md:text-sm font-bold transition-all border-b-2 flex items-center gap-2 cursor-pointer",
+                  "py-2 md:py-3 px-1 md:px-5 text-[11px] md:text-sm font-bold transition-all border-b-2 flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 cursor-pointer text-center",
                   activeTab === 'overview'
-                    ? "border-blue-600 text-blue-600 font-extrabold"
+                    ? "border-blue-600 text-blue-600 font-extrabold bg-blue-50/50 md:bg-transparent rounded-t-lg md:rounded-none"
                     : "border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-200"
                 )}
               >
-                <TrendingUp className="w-4 h-4" /> Tổng quan & Báo cáo
+                <TrendingUp className="w-4 h-4 shrink-0" />
+                <span className="hidden md:inline">Tổng quan & Báo cáo</span>
+                <span className="md:hidden">Tổng quan</span>
               </button>
               <button
-                onClick={() => setActiveTab('households')}
+                onClick={() => {
+                  setActiveTab('households');
+                  setSelectedHouseholdId(null);
+                }}
                 className={cn(
-                  "py-3 px-4 md:px-5 text-xs md:text-sm font-bold transition-all border-b-2 flex items-center gap-2 cursor-pointer",
+                  "py-2 md:py-3 px-1 md:px-5 text-[11px] md:text-sm font-bold transition-all border-b-2 flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 cursor-pointer text-center",
                   activeTab === 'households'
-                    ? "border-blue-600 text-blue-600 font-extrabold"
+                    ? "border-blue-600 text-blue-600 font-extrabold bg-blue-50/50 md:bg-transparent rounded-t-lg md:rounded-none"
                     : "border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-200"
                 )}
               >
-                <Home className="w-4 h-4" /> Quản lý Hộ khẩu
+                <Home className="w-4 h-4 shrink-0" />
+                <span className="hidden md:inline">Quản lý Hộ khẩu</span>
+                <span className="md:hidden">Hộ khẩu</span>
               </button>
               <button
                 onClick={() => setActiveTab('members')}
                 className={cn(
-                  "py-3 px-4 md:px-5 text-xs md:text-sm font-bold transition-all border-b-2 flex items-center gap-2 cursor-pointer",
+                  "py-2 md:py-3 px-1 md:px-5 text-[11px] md:text-sm font-bold transition-all border-b-2 flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 cursor-pointer text-center",
                   activeTab === 'members'
-                    ? "border-blue-600 text-blue-600 font-extrabold"
+                    ? "border-blue-600 text-blue-600 font-extrabold bg-blue-50/50 md:bg-transparent rounded-t-lg md:rounded-none"
                     : "border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-200"
                 )}
               >
-                <Users className="w-4 h-4" /> Quản lý Nhân khẩu
+                <Users className="w-4 h-4 shrink-0" />
+                <span className="hidden md:inline">Quản lý Nhân khẩu</span>
+                <span className="md:hidden">Nhân khẩu</span>
               </button>
               <button
                 onClick={() => setActiveTab('fees')}
                 className={cn(
-                  "py-3 px-4 md:px-5 text-xs md:text-sm font-bold transition-all border-b-2 flex items-center gap-2 cursor-pointer",
+                  "py-2 md:py-3 px-1 md:px-5 text-[11px] md:text-sm font-bold transition-all border-b-2 flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 cursor-pointer text-center",
                   activeTab === 'fees'
-                    ? "border-blue-600 text-blue-600 font-extrabold"
+                    ? "border-blue-600 text-blue-600 font-extrabold bg-blue-50/50 md:bg-transparent rounded-t-lg md:rounded-none"
                     : "border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-200"
                 )}
               >
-                <CreditCard className="w-4 h-4" /> Quản lý Thu nộp
+                <CreditCard className="w-4 h-4 shrink-0" />
+                <span className="hidden md:inline">Quản lý Thu nộp</span>
+                <span className="md:hidden">Thu nộp</span>
               </button>
             </div>
           </nav>
